@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
-import { checkPermission } from './utils/permissions';
+import { View } from 'react-native';
+import { requestPermission } from './utils/permissions';
 import { getAudioFiles } from './utils/audioFiles';
 import AudioPlayer from './components/AudioPlayer';
 import AudioList from './components/AudioList';
@@ -11,7 +11,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchAudioFiles = async () => {
-      const permissionGranted = await checkPermission();
+      const permissionGranted = await requestPermission();
       if (permissionGranted) {
         const files = await getAudioFiles();
         setAudioFiles(files);
@@ -33,3 +33,4 @@ const App = () => {
 };
 
 export default App;
+
