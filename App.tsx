@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { View, Button, Text } from 'react-native';
-import { checkPermission } from './utils/permissions';
+import React, { useState, useEffect } from 'react';
+import { View, Button, Text, Alert } from 'react-native';
+import { requestPermission } from './utils/permissions';
 import { getAudioFiles } from './utils/audioFiles';
 import AudioPlayer from './components/AudioPlayer';
 
@@ -10,15 +10,25 @@ const App = () => {
 
   // Fonction pour récupérer et afficher les fichiers audio
   const fetchAudioFiles = async () => {
-    const permissionGranted = await checkPermission();
+    const permissionGranted = await requestPermission(); 
     if (permissionGranted) {
-      const files = await getAudioFiles();
-      setAudioFiles(files); // Mettre à jour l'état avec les fichiers récupérés
+      try {
+        const files = await getAudioFiles();
+        if (files.length === 0) {
+          Alert.alert('Aucun fichier audio trouvé');
+        } else {
+          setAudioFiles(files);
+        }
+      } catch (error) {
+        Alert.alert('Erreur', 'Une erreur s\'est produite lors de la récupération des fichiers audio.');
+      }
+    } else {
+      Alert.alert('Permission refusée', 'Vous devez autoriser l\'accès au stockage pour voir les fichiers audio.');
     }
   };
 
-  React.useEffect(() => {
-    fetchAudioFiles();
+  useEffect(() => {
+    fetchAudioFiles(); 
   }, []);
 
   return (
