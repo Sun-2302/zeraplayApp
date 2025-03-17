@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 
-// Composant pour afficher la liste des fichiers audio
-const AudioList = ({ audioFiles }: { audioFiles: any[] }) => {
+
+const AudioList = ({ audioFiles, onSelectFile }: { audioFiles: any[]; onSelectFile: (filePath: string) => void }) => {
   if (audioFiles.length === 0) {
     return (
       <View style={styles.container}>
@@ -13,14 +13,14 @@ const AudioList = ({ audioFiles }: { audioFiles: any[] }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Fichiers Audio</Text>
+      <Text style={styles.title}>Chansons</Text>
       <FlatList
         data={audioFiles}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
+          <TouchableOpacity onPress={() => onSelectFile(item.path)} style={styles.itemContainer}>
             <Text style={styles.itemText}>{item.title}</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -29,22 +29,20 @@ const AudioList = ({ audioFiles }: { audioFiles: any[] }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1, 
     padding: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    textAlign: 'center',
   },
   itemContainer: {
     padding: 10,
     marginVertical: 5,
     backgroundColor: '#f1f1f1',
     borderRadius: 5,
-    width: '100%',
   },
   itemText: {
     fontSize: 18,

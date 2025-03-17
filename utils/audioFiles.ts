@@ -1,6 +1,5 @@
 import RNFS from 'react-native-fs';
 
-// Fonction pour récupérer les fichiers audio 
 export const getAudioFiles = async (): Promise<any[]> => {
   let allFiles: any[] = [];
   try {
